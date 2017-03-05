@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Map from './map.jsx';
+import Container from './container.jsx';
 
 ReactDOM.render (
-  <Map />,
+  <Container />,
   document.getElementById('app')
 )
