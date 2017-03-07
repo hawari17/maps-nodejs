@@ -22075,6 +22075,7 @@
 	    var _this = _possibleConstructorReturn(this, (Container.__proto__ || Object.getPrototypeOf(Container)).call(this));
 	
 	    _this.state = {
+	      pName: "",
 	      places: [],
 	      showForm: false
 	    };
@@ -22083,14 +22084,36 @@
 	
 	  _createClass(Container, [{
 	    key: 'addPlace',
-	    value: function addPlace(place) {
+	    value: function addPlace(position) {
+	      // let places = this.state.places;
+	      // places.push(place);
+	
+	      this.setState({
+	        // places: places,
+	        pPosition: position,
+	        showForm: true
+	      });
+	    }
+	  }, {
+	    key: 'handleNameChange',
+	    value: function handleNameChange(event) {
+	      this.setState({
+	        pName: event.target.value
+	      });
+	    }
+	  }, {
+	    key: 'savePlace',
+	    value: function savePlace() {
 	      var places = this.state.places;
+	      var place = {
+	        name: this.state.pName,
+	        position: this.state.pPosition
+	      };
 	      places.push(place);
 	
 	      this.setState({
 	        places: places,
-	        place: place,
-	        showForm: true
+	        showForm: false
 	      });
 	    }
 	  }, {
@@ -22113,18 +22136,28 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'col-md-8' },
-	          _react2.default.createElement(_map2.default, { onClick: function onClick(place) {
-	              return _this2.addPlace(place);
+	          _react2.default.createElement(_map2.default, { onClick: function onClick(position) {
+	              return _this2.addPlace(position);
 	            } })
 	        ),
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'col-md-4' },
-	          this.state.showForm && _react2.default.createElement(_reactBootstrap.FormControl, {
-	            type: 'text',
-	            value: this.state.name,
-	            placeholder: 'Enter Name'
-	          })
+	          this.state.showForm && _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', value: this.state.name,
+	              placeholder: 'Enter Name', onChange: function onChange(event) {
+	                return _this2.handleNameChange(event);
+	              } }),
+	            _react2.default.createElement(
+	              _reactBootstrap.Button,
+	              { type: 'submit', onClick: function onClick() {
+	                  return _this2.savePlace();
+	                } },
+	              'Submit'
+	            )
+	          )
 	        )
 	      );
 	    }
@@ -22177,11 +22210,8 @@
 	  _createClass(Map, [{
 	    key: 'placePoi',
 	    value: function placePoi(event) {
-	      var place = {
-	        position: event.latLng
-	      };
-	
-	      this.props.onClick(place);
+	      var position = event.latLng;
+	      this.props.onClick(position);
 	
 	      var marker = new google.maps.Marker({
 	        position: event.latLng,

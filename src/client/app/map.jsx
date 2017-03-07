@@ -9,11 +9,8 @@ class Map extends React.Component {
   }
 
   placePoi(event) {
-    let place = {
-      position: event.latLng,
-    };
-
-    this.props.onClick(place);
+    let position = event.latLng;
+    this.props.onClick(position);
 
     const marker = new google.maps.Marker({
       position: event.latLng,
