@@ -1,44 +1,24 @@
 import React from 'react';
 import {render} from 'react-dom';
 
+/* TODO add infobox available for each marker, only display it when clicked */
 class Map extends React.Component {
 
   constructor() {
     super();
-
-    this.state = {
-      places: []
-    }
-
-    this.panToBandung = this.panToBandung.bind(this);
-  }
-
-  panToBandung() {
-    const BANDUNG_POSITION = {
-      lat: -6.9219222,
-      lng: 107.6048659
-    };
-
-    this.map.panTo(BANDUNG_POSITION);
   }
 
   placePoi(event) {
-    let new_state = this.state;
-
     let place = {
       position: event.latLng,
     };
 
-    new_state.places.push(place);
-
-    this.state = new_state;
+    this.props.onClick(place);
 
     const marker = new google.maps.Marker({
       position: event.latLng,
       map: this.map
     });
-
-    console.log(this.state);
   }
 
   componentDidMount() {
@@ -60,7 +40,6 @@ class Map extends React.Component {
 
   render() {
     const mapStyle = {
-      width: 500,
       height: 300,
       border: '1px solid black'
     };
