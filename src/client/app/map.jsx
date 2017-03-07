@@ -5,6 +5,11 @@ class Map extends React.Component {
 
   constructor() {
     super();
+
+    this.state = {
+      places: []
+    }
+
     this.panToBandung = this.panToBandung.bind(this);
   }
 
@@ -17,7 +22,27 @@ class Map extends React.Component {
     this.map.panTo(BANDUNG_POSITION);
   }
 
+  placePoi(event) {
+    let new_state = this.state;
+
+    let place = {
+      position: event.latLng,
+    };
+
+    new_state.places.push(place);
+
+    this.state = new_state;
+
+    const marker = new google.maps.Marker({
+      position: event.latLng,
+      map: this.map
+    });
+
+    console.log(this.state);
+  }
+
   componentDidMount() {
+    const self = this;
     const MONAS_POSITION = {
       lat: -6.1753871,
       lng: 106.8249641
@@ -26,6 +51,10 @@ class Map extends React.Component {
     this.map = new google.maps.Map(this.refs.map, {
       center: MONAS_POSITION,
       zoom: 16
+    });
+
+    this.map.addListener('click', function(event){
+      self.placePoi.bind(self)(event);
     });
   }
 
@@ -37,10 +66,7 @@ class Map extends React.Component {
     };
 
     return (
-      <div>
-        <button onClick={this.panToBandung}>Pergi ke Bandung</button>
-        <div ref="map" style={mapStyle}>I should be a map!</div>
-      </div>
+      <div ref="map" style={mapStyle}>I should be a map!</div>
     );
   }
 }

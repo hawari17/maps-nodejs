@@ -22134,6 +22134,10 @@
 	
 	    var _this = _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).call(this));
 	
+	    _this.state = {
+	      places: []
+	    };
+	
 	    _this.panToBandung = _this.panToBandung.bind(_this);
 	    return _this;
 	  }
@@ -22149,8 +22153,29 @@
 	      this.map.panTo(BANDUNG_POSITION);
 	    }
 	  }, {
+	    key: 'placePoi',
+	    value: function placePoi(event) {
+	      var new_state = this.state;
+	
+	      var place = {
+	        position: event.latLng
+	      };
+	
+	      new_state.places.push(place);
+	
+	      this.state = new_state;
+	
+	      var marker = new google.maps.Marker({
+	        position: event.latLng,
+	        map: this.map
+	      });
+	
+	      console.log(this.state);
+	    }
+	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      var self = this;
 	      var MONAS_POSITION = {
 	        lat: -6.1753871,
 	        lng: 106.8249641
@@ -22159,6 +22184,10 @@
 	      this.map = new google.maps.Map(this.refs.map, {
 	        center: MONAS_POSITION,
 	        zoom: 16
+	      });
+	
+	      this.map.addListener('click', function (event) {
+	        self.placePoi.bind(self)(event);
 	      });
 	    }
 	  }, {
@@ -22172,17 +22201,8 @@
 	
 	      return _react2.default.createElement(
 	        'div',
-	        null,
-	        _react2.default.createElement(
-	          'button',
-	          { onClick: this.panToBandung },
-	          'Pergi ke Bandung'
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { ref: 'map', style: mapStyle },
-	          'I should be a map!'
-	        )
+	        { ref: 'map', style: mapStyle },
+	        'I should be a map!'
 	      );
 	    }
 	  }]);
